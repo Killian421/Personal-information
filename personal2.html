@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Form Information</title>
+
+</head>
+<body>
+    <div class="container">
+        <h1>PERSONAL FORM INFORMATION</h1>
+        <form id="submitForm">
+
+            <label for="name">NAME: </label>
+            <input type="text" id="name" required placeholder="Name of Student or persons">
+
+            <label for="age">AGE: </label>
+            <input type="number" id="age" required placeholder="Age">
+
+            <label for="hobbies">HOBBIES: </label>
+            <input type="text" id="hobbies" required placeholder="enter you hoobi">
+
+            <label for="student">Are you a student?</label>
+            <input type="checkbox" id="student">
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <h2>Summary</h2>
+        <ul id="summary"></ul>
+    </div>
+
+<script>
+document.getElementById('submitForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    let name = document.getElementById('name').value;
+    let age = Number(document.getElementById('age').value);
+    let hobbies = document.getElementById('hobbies').value.split(',').map(hobby => hobby.trim());
+    let student = document.getElementById('student').checked;
+
+    let summaryItem = document.createElement('li');
+    summaryItem.innerHTML = `
+        <strong>Name:</strong> ${name}<br>
+        <strong>Age:</strong> ${age}<br>
+        <strong>Is Student:</strong> ${student ? 'Yes' : 'No'}<br>
+    `;
+
+    let editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit';
+    editBtn.classList.add('edit-btn');
+    editBtn.addEventListener('click', function() {
+        document.getElementById('name').value = name;
+        document.getElementById('age').value = age;
+        document.getElementById('hobbies').value = hobbies.join(', ');
+        document.getElementById('student').checked = student;
+        summaryItem.remove();
+    });
+
+    let deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.addEventListener('click', function() {
+        summaryItem.remove();
+    });
+
+    summaryItem.appendChild(editBtn);
+    summaryItem.appendChild(deleteBtn);
+    document.getElementById('summary').appendChild(summaryItem);
+
+    document.getElementById('submitForm').reset();
+});
+</script>
+</body>
+</html>
