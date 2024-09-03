@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style4.css">
+    <style>
+        .summary-item {
+            margin-bottom: 15px;
+        }
+        .summary-item button {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <form id="infoForm">
+        <center>
+            <h1>Personal Information Form</h1>
+        </center>
+        <label for="name">Name:</label>
+        <input type="text" id="name"><br><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age"><br><br>
+
+        <label for="hobbies">Hobbies:</label>
+        <input type="text" id="hobbies"><br><br>
+        <center>
+            <label for="student">Are you a Student?</label>
+            <input type="checkbox" id="student"><br><br>
+        </center>
+
+        <button id="button-submit" type="submit">Submit</button>
+    </form>
+    <center>
+        <h2>Summary</h2>
+    </center>
+    <div id="summary"></div>
+
+    <script>
+        document.getElementById('infoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let name = document.getElementById('na  me').value;
+            let age = Number(document.getElementById('age').value);
+            let hobbies = document.getElementById('hobbies').value.split(',');
+            let isStudent = document.getElementById('student').checked;
+
+            let summary = `
+                <div id="summary-item" class="summary-item">
+                    <p>Name: ${name}<br>Age: ${age}<br>Hobbies: ${hobbies.join(', ')}<br>Student: ${isStudent ? 'Yes' : 'No'}</p>
+                    <button id="edit-button" onclick="editSummary()">Edit</button>
+                    <button id="delete-button" onclick="deleteSummary()">Delete</button>
+                </div>
+            `;
+
+            // Update or replace the existing summary
+            let summaryContainer = document.getElementById('summary');
+            summaryContainer.innerHTML = summary;
+
+            document.getElementById('infoForm').reset();
+        });
+
+        function editSummary() {
+            let summaryItem = document.getElementById('summary-item');
+            let p = summaryItem.querySelector('p');
+            let content = p.innerHTML.split('<br>').map(line => line.trim());
+
+            let [name, age, hobbies, student] = content;
+            let isStudent = student === 'Student: Yes';
+
+            document.getElementById('name').value = name.replace('Name: ', '');
+            document.getElementById('age').value = age.replace('Age: ', '');
+            document.getElementById('hobbies').value = hobbies.replace('Hobbies: ', '').split(', ');
+            document.getElementById('student').checked = isStudent;
+
+            // Optionally, remove the summary item to make it clear that it is being edited
+            deleteSummary();
+        }
+
+        function deleteSummary() {
+            let summaryItem = document.getElementById('summary-item');
+            if (summaryItem) {
+                summaryItem.remove();
+            }
+        }
+    </script>
+</body>
+</html>
